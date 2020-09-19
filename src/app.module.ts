@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { EnigmaModule } from '@yggni/enigma';
+import { } from '@yggni/enigma';
 
 @Module({
   imports: [EnigmaModule],
