@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+    yggni:
+        image: postgres:alpine
+        environment:
+            POSTGRES_PASSWORD: ${PG_PASS}
+        ports:
+            - ${PG_PORT}:${PG_PORT}
+        container_name: yggni
+        volumes: [./docker/init.sql:/docker-entrypoint-initdb.d/init.sql]

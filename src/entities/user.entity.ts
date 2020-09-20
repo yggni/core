@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
-@Entity('yggni.user')
+@Entity({ schema: 'yggni', name: 'user' })
 export class User {
-    @PrimaryColumn()
-    id: string;
+    @PrimaryColumn({ generated: 'increment' })
+    id: Number;
     @Column()
-    name: string;
+    name: String;
 }
