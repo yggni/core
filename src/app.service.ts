@@ -11,8 +11,12 @@ export class AppService {
     @InjectRepository(User) private readonly userRepo: Repository<User>
   ) { }
 
-  async getHello(): Promise<string> {
+  async getAllUsers(): Promise<Array<User>> {
     const users = await this.userRepo.find();
-    return JSON.stringify(users);
+    return users;
+  }
+
+  async addUser(user: User): Promise<void> {
+    await this.userRepo.save(user);
   }
 }
