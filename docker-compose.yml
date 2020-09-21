@@ -1,11 +1,43 @@
 version: '3'
 
 services:
-    yggni:
+    yggni-db:
         image: postgres:alpine
         environment:
             POSTGRES_PASSWORD: ${PG_PASS}
         ports:
             - ${PG_PORT}:${PG_PORT}
-        container_name: yggni
-        volumes: [./docker/init.sql:/docker-entrypoint-initdb.d/init.sql]
+        container_name: yggni-db
+        volumes: 
+            - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+        networks:
+            - yggni
+    yggni-api:
+        build: 
+            context: .
+            args:
+                - PORT=${PORT}
+                - GITHUB_TOKEN=${GITHUB_TOKEN}
+        image: yggni-api
+        depends_on: 
+            - yggni-db
+        environment:
+            NODE_ENV: ${NODE_ENV}
+            PG_HOST: yggni-db
+            PG_USER: ${PG_USER}
+            PG_PASS: ${PG_PASS}
+            PG_PORT: ${PG_PORT}
+            PG_DB: ${PG_DB}
+            DB_SYNC: ${DB_SYNC}
+            PROTECTED_ENVIRONMENTS: ${PROTECTED_ENVIRONMENTS}
+            TOKEN: ${TOKEN}
+            NODE_ENV: ${NODE_ENV}
+        ports:
+            - ${PORT}:${PORT}
+        container_name: yggni-api
+        networks:
+            - yggni
+networks:
+    yggni:
+        driver: bridge
+        
